@@ -15,7 +15,7 @@ from tqdm import tqdm
 import time
 
 
-class Train(object):
+class Trainer(object):
     
     def __init__(self, imgs_path, anno_path, augment=True, epochs=4, batch_size=4, output_dir="summarizaton_model"):
         
@@ -106,7 +106,9 @@ class Train(object):
         rouge = evaluate.load("rouge")
         
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
-        data = Dataset.from_pandas(self.df)
+        data_dict = {"train":self.df}
+        data = Dataset.from_dict(data_dict)
+        
         data = data["train"].train_test_split(test_size=0.2)
         
         prefix = "summarize: "
@@ -148,7 +150,7 @@ class Train(object):
             save_total_limit=3,
             num_train_epochs=self.epochs,
             predict_with_generate=True,
-            fp16=True,
+            fp16=False,
             push_to_hub=False,
             save_strategy = "epoch"
         )

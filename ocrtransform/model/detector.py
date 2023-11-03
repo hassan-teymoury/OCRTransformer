@@ -41,7 +41,7 @@ class Detector(object):
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         inputs = tokenizer(self.text, return_tensors="pt").input_ids
         model = AutoModelForSeq2SeqLM.from_pretrained(self.model_dir)
-        outputs = model.generate(inputs, max_new_tokens=100, do_sample=False)
+        outputs = model.generate(inputs, max_new_tokens=128, do_sample=False, temperature=0.99)
         self.results_txt = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return self.results_txt
         
