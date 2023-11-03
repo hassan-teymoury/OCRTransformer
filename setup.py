@@ -30,7 +30,7 @@ if __name__ == "__main__":
         author_email='hassan.teymoury@gmail.com',
         url="https://github.com/hassan-teymoury/OCRTransformer.git",
         license='Apache License 2.0',
-        packages=["model"],
+        packages=["ocrtransform.model"],
         include_package_data=True,
         install_requires=parse_packages("requirements.txt"),
     )
