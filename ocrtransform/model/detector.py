@@ -35,7 +35,8 @@ class Detector(object):
         text = pytesseract.image_to_string(refined_img)
         text = text.replace("\n", " ")
         text_sections = [t.strip() for t in text.split(" ")]
-        self.text = " ".join(text_sections)
+        self.text = ", ".join(text_sections)
+        
         self.text = "summarize: " + self.text
         
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
