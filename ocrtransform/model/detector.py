@@ -18,7 +18,7 @@ class Detector(object):
         # Downloading Pretrained weights
         self.model_dir = os.path.join(os.getcwd(), "checkpoints")
         if not os.path.isdir(self.model_dir):
-            pretrained_path = "https://drive.google.com/drive/folders/12rpAG5JopyFcL0E2wGiEhhBfm05KzXmw?usp=sharing"
+            pretrained_path = "https://drive.google.com/drive/folders/143K2lisgN1OZOJHn5VaTPJMIfFTTkX8Q?usp=sharing"
             
             print("Downloading t5 Seq2Seq pretrained model ....")
             gdown.download_folder(pretrained_path, quiet=True, use_cookies=False,
