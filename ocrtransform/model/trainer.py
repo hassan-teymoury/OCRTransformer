@@ -13,7 +13,7 @@ import cv2
 import json
 from tqdm import tqdm
 import time
-
+from sklearn.model_selection import train_test_split
 
 class Trainer(object):
     
@@ -106,10 +106,10 @@ class Trainer(object):
         rouge = evaluate.load("rouge")
         
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
-        data_dict = {"train":self.df}
-        data = Dataset.from_dict(data_dict)
-        
-        data = data["train"].train_test_split(test_size=0.2)
+        df_train, df_test = train_test_split(self.df, test_size=0.2)
+        data_train = Dataset.from_pandas(df_train)
+        data_test = Dataset.from_pandas(df_test)
+        # data = data["train"].train_test_split(test_size=0.2)
         
         prefix = "summarize: "
         
@@ -122,8 +122,9 @@ class Trainer(object):
             model_inputs["labels"] = labels["input_ids"]
             return model_inputs
 
-        tokenized_data = data.map(preprocess_function, batched=True)
-
+        tokenized_data_train = data_train.map(preprocess_function, batched=True)
+        tokenized_data_test = data_test.map(preprocess_function, batched=True)
+        
         data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=self.model_dir)
         
         def compute_metrics(eval_pred):
@@ -158,8 +159,8 @@ class Trainer(object):
         trainer = Seq2SeqTrainer(
             model=model,
             args=training_args,
-            train_dataset=tokenized_data["train"],
-            eval_dataset=tokenized_data["test"],
+            train_dataset=tokenized_data_train,
+            eval_dataset=tokenized_data_test,
             tokenizer=tokenizer,
             data_collator=data_collator,
             compute_metrics=compute_metrics,
