@@ -33,11 +33,10 @@ class Detector(object):
         img = cv2.imread(img_path)
         refined_img = cv2.fastNlMeansDenoisingColored(img, None, 10, 10, 7, 15)
         text = pytesseract.image_to_string(refined_img)
-        text = text.replace("\n", " ")
-        text_sections = [t.strip() for t in text.split(" ")]
-        self.text = ", ".join(text_sections)
+        text = text.replace("\n", ", ")
+        # self.text = ", ".join(text_sections)
         
-        self.text = "summarize: " + self.text
+        self.text = "summarize: " + text
         
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         inputs = tokenizer(self.text, return_tensors="pt").input_ids
