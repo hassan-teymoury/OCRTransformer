@@ -18,7 +18,7 @@ class Detector(object):
         # Downloading Pretrained weights
         self.model_dir = os.path.join(os.getcwd(), "checkpoints")
         if not os.path.isdir(self.model_dir):
-            pretrained_path = "https://drive.google.com/drive/folders/162ahxNB49qdcjfilWFIujEisoHN9BgTv?usp=sharing"
+            pretrained_path = "https://drive.google.com/drive/folders/16R6xaxp_N5fYfXfaC96JOFxgtcsNGdxY?usp=sharing"
             
             print("Downloading t5 Seq2Seq pretrained model ....")
             gdown.download_folder(pretrained_path, quiet=True, use_cookies=False,
@@ -33,10 +33,10 @@ class Detector(object):
         img = cv2.imread(img_path)
         refined_img = cv2.fastNlMeansDenoisingColored(img, None, 10, 10, 7, 15)
         text = pytesseract.image_to_string(refined_img)
-        text = text.replace("\n", ", ")
-        # self.text = ", ".join(text_sections)
-        
-        self.text = "summarize: " + text
+        text = text.replace("\n", " ")
+        text_sections = [t.strip() for t in text.split(" ")]
+        self.text = ", ".join(text_sections)
+        self.text = "summarize: " + self.text
         
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         inputs = tokenizer(self.text, return_tensors="pt").input_ids

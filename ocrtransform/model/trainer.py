@@ -96,7 +96,7 @@ class Train(object):
     def train(self):
         
         if not os.path.isdir(self.model_dir):
-            pretrained_path = "https://drive.google.com/drive/folders/162ahxNB49qdcjfilWFIujEisoHN9BgTv?usp=sharing"
+            pretrained_path = "https://drive.google.com/drive/folders/16R6xaxp_N5fYfXfaC96JOFxgtcsNGdxY?usp=sharing"
         
             print("Downloading t5 Seq2Seq pretrained model ....")
             gdown.download_folder(pretrained_path, quiet=True, use_cookies=False,
