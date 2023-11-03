@@ -18,7 +18,7 @@ class Detector(object):
         # Downloading Pretrained weights
         self.model_dir = os.path.join(os.getcwd(), "checkpoints")
         if not os.path.isdir(self.model_dir):
-            pretrained_path = "https://drive.google.com/drive/folders/11ytj6ERnKxEd1-2RC2KkLtlngnqjsNUP?usp=drive_link"
+            pretrained_path = "https://drive.google.com/drive/folders/11ytj6ERnKxEd1-2RC2KkLtlngnqjsNUP?usp=sharing"
             
             print("Downloading t5 Seq2Seq pretrained model ....")
             gdown.download_folder(pretrained_path, quiet=True, use_cookies=False,
@@ -26,6 +26,7 @@ class Detector(object):
             print("Finished")
         else:
             print("model already downloaded")
+    
     
     def forward_model(self, img_path):
         
@@ -42,14 +43,14 @@ class Detector(object):
         model = AutoModelForSeq2SeqLM.from_pretrained(self.model_dir)
         outputs = model.generate(inputs, max_new_tokens=100, do_sample=False)
         self.results_txt = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        print(self.results_txt)
+        return self.results_txt
         
     def postprocess(self):
         results_splits = self.results_txt.split("and")
-        date_script = results_splits[0]
-        total_script = results_splits[1]
+        date_script = results_splits[0].strip(" ")
+        total_script = results_splits[1].strip(" ")
         date_ = date_script.split(" ")[-1]
         total_ = total_script.split(" ")[-1]
         self.final_res = {"date":date_, "total":total_}
-
+        return self.final_res
         
