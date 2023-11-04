@@ -110,5 +110,10 @@ trainer_obj = trainer.Trainer(
     epochs=epochs, batch_size=batch_size, output_dir=out_dir
 )
 
+trainer_obj.load_data()
+trainer_obj.preprocess_texts()
+trainer_obj.download_pretrained_model()
+trainer_obj.tokenize_text_data()
 trainer_obj.train()
+
 ```
