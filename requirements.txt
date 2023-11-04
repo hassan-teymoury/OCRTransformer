@@ -10,3 +10,4 @@ evaluate
 rouge_score
 gdown
 scikit-learn
+tqdm
