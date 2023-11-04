@@ -21,5 +21,8 @@ if __name__ == "__main__":
         batch_size=args.batch_size, epochs=args.epochs, augment=args.augment,
         output_dir=args.out_dir
     )
-
+    trainer_obj.load_data()
+    trainer_obj.preprocess_texts()
+    trainer_obj.download_pretrained_model()
+    trainer_obj.tokenize_text_data()
     trainer_obj.train()
